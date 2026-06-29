@@ -24,7 +24,7 @@ image: build-deb
 # run our test
 test: image
 	pip install -q requests docker
-	python3 test/test.py nginx:1.25-bookworm $(IMAGE):$(TAG)
+	python test/test.py nginx:1.25-bookworm $(IMAGE):$(TAG)
 
 # remove build artifacts
 clean:
