@@ -1,10 +1,5 @@
-# build/Dockerfile
-# Produces the nginx .deb from upstream source.
-# Starts from a clean debian:bookworm-slim — no pre-baked binaries.
-#
-# Usage (called by Makefile):
-#   docker build -f build/Dockerfile -t nginx-deb-builder build/
-#   docker run --rm -v $(pwd)/debs:/out nginx-deb-builder
+# produces the nginx .deb from upstream source.
+# starts from a clean debian:bookworm-slim 
 
 FROM debian:bookworm-slim
 

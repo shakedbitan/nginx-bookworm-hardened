@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """
-test/test.py
 
 Compatibility test for the hardened nginx image.
 

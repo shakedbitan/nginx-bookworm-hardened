@@ -1,29 +1,22 @@
-# Containerfile
-# Builds the final hardened nginx image from the .deb produced by build/.
-#
-# Matches nginx:1.25-bookworm exactly:
-#   - nginx user uid=101
-#   - same paths (/etc/nginx, /var/cache/nginx, /var/log/nginx)
-#   - same EXPOSE, STOPSIGNAL, WORKDIR, ENTRYPOINT, CMD
+# builds the final hardened nginx image 
 
 FROM debian:bookworm-slim
 
 ENV NGINX_VERSION=1.26.1 \
     PKG_RELEASE=1~bookworm
 
-# Same user and uid as the official nginx image
+# same user and uid as official nginx image
 RUN groupadd --system --gid 101 nginx && \
     useradd --system --gid nginx --no-create-home \
             --home /nonexistent --comment "nginx user" \
             --shell /bin/false --uid 101 nginx
 
-# Copy the .deb produced by build/
+# copy the .deb 
 COPY debs/nginx_*.deb /tmp/nginx.deb
 
-# Upgrade system packages — eliminates CVEs in libssl3, libcurl4, libfreetype6,
-# libexpat1, libkrb5, libnghttp2, libxml2, libsystemd0 that already have
-# Debian security updates available.
-# Then install our custom-built nginx .deb.
+# upgrade system packages- eliminating CVEs in libssl3, libcurl4, libfreetype6,
+# libexpat1, libkrb5, libnghttp2, libxml2, libsystemd0 
+# than install our custom-built nginx .deb.
 RUN apt-get update && \
     apt-get upgrade -y --no-install-recommends && \
     apt-get install -y --no-install-recommends \
@@ -40,14 +33,14 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Symlink logs to stdout/stderr — identical to official nginx image
+# symlink logs to stdout/stderr- identical to official nginx image
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
     ln -sf /dev/stderr /var/log/nginx/error.log
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Match official image exactly
+# match official image exactly
 EXPOSE 80
 STOPSIGNAL SIGQUIT
 WORKDIR /

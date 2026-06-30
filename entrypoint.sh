@@ -1,5 +1,5 @@
 #!/bin/sh
-# exact copy of the official nginx Docker image entrypoint.
+# copy of the official nginx Docker image entrypoint.
 
 
 set -e
